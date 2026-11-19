@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Returnly — Find it. Return it.</title>
+<style>
+:root{--navy:#183765;--blue:#315b9b;--pale:#edf3ff;--line:#dbe5f5;--ink:#172b49;--muted:#64748b;--white:#fff;--green:#23845d}
+*{box-sizing:border-box}body{margin:0;background:#f7f9fd;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{height:76px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,24px);position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;font-size:25px;font-weight:800;letter-spacing:-1px;color:var(--navy);cursor:pointer}
+.brand-mark{width:36px;height:36px;border:4px solid var(--navy);border-radius:50%;display:grid;place-items:center;position:relative;font-size:20px;line-height:1}
+.brand-mark:after{content:"";position:absolute;width:13px;height:4px;background:var(--navy);right:-9px;bottom:-3px;transform:rotate(48deg);border-radius:4px}
+nav{display:flex;gap:8px;align-items:center}nav button{border:0;background:transparent;color:#455875;padding:10px 14px;border-radius:10px;font-weight:650}nav button.active,nav button:hover{background:var(--pale);color:var(--navy)}
+.primary{background:var(--navy)!important;color:white!important;border:0!important;border-radius:11px;padding:12px 18px;font-weight:700}
+main{max-width:1120px;margin:0 auto;padding:34px 24px 70px}
+.hero{background:linear-gradient(120deg,#eaf1ff,#f7faff);border:1px solid #dce7fa;border-radius:24px;padding:46px;display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:center;overflow:hidden}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.7px;color:var(--blue);font-weight:800}
+h1{font-size:clamp(36px,5vw,58px);line-height:1.04;letter-spacing:-2px;margin:12px 0;color:var(--navy)}
+.hero p{color:#52647e;font-size:17px;line-height:1.6;max-width:540px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.btn{border:1px solid var(--line);background:white;color:var(--navy);padding:12px 17px;border-radius:11px;font-weight:700}
+.btn.primary{background:var(--navy);color:white}
+.hero-art{height:220px;display:grid;place-items:center}
+.hero-icon{width:170px;height:170px;border:13px solid var(--navy);border-radius:50%;display:grid;place-items:center;color:var(--navy);font-size:76px;position:relative;transform:rotate(-8deg)}
+.hero-icon:after{content:"";position:absolute;width:62px;height:13px;background:var(--navy);border-radius:10px;right:-42px;bottom:4px;transform:rotate(53deg)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:36px 0 16px}
+h2{margin:0;color:var(--navy);font-size:25px;letter-spacing:-.6px}.sub{color:var(--muted);margin:7px 0 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.item-card{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:.15s}
+.item-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #1c3b6812}
+.item-art{height:145px;background:linear-gradient(145deg,#eef3fb,#e2eaf7);display:grid;place-items:center;font-size:64px}
+.item-info{padding:14px}.item-info strong{display:block;color:var(--ink);font-size:15px}.meta{font-size:12px;color:var(--muted);margin-top:5px}
+.tag{display:inline-block;background:#edf3ff;color:var(--blue);font-size:11px;font-weight:750;padding:5px 8px;border-radius:20px;margin-top:10px}
+.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:24px}
+.page-title{margin:4px 0 8px;font-size:32px;color:var(--navy);letter-spacing:-1px}
+.toolbar{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap}
+input,select,textarea{width:100%;border:1px solid #d7e1ef;border-radius:10px;padding:12px 13px;background:#fff;color:var(--ink);outline:none}
+input:focus,select:focus,textarea:focus{border-color:#6d91cb;box-shadow:0 0 0 3px #315b9b16}
+.search{flex:1;min-width:220px}.toolbar select{width:auto;min-width:150px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;font-weight:750;color:#3c506e}
+textarea{min-height:100px;resize:vertical}
+.note{background:#f1f6ff;border:1px solid #dce8fb;color:#536782;padding:13px 15px;border-radius:11px;font-size:13px;line-height:1.5}
+.empty{text-align:center;padding:50px 20px;color:var(--muted);background:white;border:1px dashed #cbd8ea;border-radius:16px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.step{background:white;border:1px solid var(--line);border-radius:15px;padding:18px}.step b{display:block;color:var(--navy);margin:8px 0}.step span{font-size:13px;color:var(--muted);line-height:1.5}
+.iconbox{width:38px;height:38px;border-radius:11px;background:var(--pale);display:grid;place-items:center;font-size:20px}
+footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var(--muted);font-size:13px;background:white}
+.hidden{display:none!important}
+.modal-backdrop{position:fixed;inset:0;background:#10213d77;display:grid;place-items:center;padding:20px;z-index:30}
+.modal{background:white;border-radius:18px;max-width:470px;width:100%;padding:24px;box-shadow:0 20px 60px #10213d33}
+.modal-top{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:#eef3fa;border-radius:9px;width:34px;height:34px;font-size:20px}
+.status{font-size:12px;color:var(--green);font-weight:800}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#183765;color:white;padding:12px 18px;border-radius:10px;box-shadow:0 8px 30px #10213d33;z-index:50}
+.camera-box{background:#17202c;border-radius:15px;min-height:220px;display:grid;place-items:center;color:white;overflow:hidden;position:relative}
+.camera-box video{width:100%;max-height:320px;object-fit:cover}
+@media(max-width:800px){.hero{grid-template-columns:1fr;padding:30px}.hero-art{height:130px}.hero-icon{width:110px;height:110px;font-size:48px;border-width:9px}.hero-icon:after{width:42px;height:9px;right:-29px}.grid{grid-template-columns:repeat(2,1fr)}nav button{padding:9px 8px;font-size:13px}header{padding:0 14px}.brand{font-size:21px}}
+@media(max-width:520px){header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 16px}nav{width:100%;overflow:auto;justify-content:space-between}nav button{white-space:nowrap}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}main{padding:22px 15px 50px}.grid{gap:10px}.item-art{height:115px;font-size:52px}.item-info{padding:11px}.steps{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand" onclick="showPage('home')"><span class="brand-mark">↶</span>Returnly</div>
+  <nav>
+    <button data-page="home" class="active" onclick="showPage('home')">Home</button>
+    <button data-page="browse" onclick="showPage('browse')">Browse</button>
+    <button data-page="report" onclick="showPage('report')">Report item</button>
+    <button data-page="scan" onclick="showPage('scan')">Scan QR</button>
+  </nav>
+</header>
+<main>
+<section id="home">
+  <div class="hero">
+    <div><div class="eyebrow">A simpler way to reunite with your things</div><h1>Lost something?<br>Let's find it.</h1><p>Returnly helps people report, search for, and return lost belongings. Browse found items or report something you've found.</p>
+      <div class="hero-actions"><button class="btn primary" onclick="showPage('browse')">Browse items</button><button class="btn" onclick="showPage('report')">Report an item</button></div>
+    </div>
+    <div class="hero-art"><div class="hero-icon">←</div></div>
+  </div>
+  <div class="section-head"><div><h2>Recently found items</h2><p class="sub">A few items recently added to Returnly.</p></div><button class="btn" onclick="showPage('browse')">View all</button></div>
+  <div id="homeItems" class="grid"></div>
+  <div class="steps">
+    <div class="step"><div class="iconbox">⌕</div><b>1. Search items</b><span>Look through the list of items that have been reported.</span></div>
+    <div class="step"><div class="iconbox">▦</div><b>2. Verify ownership</b><span>Answer a few questions to help show that the item belongs to you.</span></div>
+    <div class="step"><div class="iconbox">↩</div><b>3. Get it back</b><span>Arrange a safe way to collect your belongings.</span></div>
+  </div>
+</section>
+
+<section id="browse" class="hidden">
+  <div class="eyebrow">Explore the listings</div><h1 class="page-title">Browse items</h1><p class="sub">Search for something you may have lost.</p>
+  <div class="toolbar"><input id="searchInput" class="search" placeholder="Search items (e.g. water bottle)" oninput="renderItems()"><select id="categoryFilter" onchange="renderItems()"><option value="All">All categories</option><option>Electronics</option><option>Accessories</option><option>Clothing</option><option>Other</option></select><select id="typeFilter" onchange="renderItems()"><option value="All">All reports</option><option value="Found">Found items</option><option value="Lost">Lost items</option></select></div>
+  <div id="itemsGrid" class="grid"></div>
+</section>
+
+<section id="report" class="hidden">
+  <div class="eyebrow">Add a listing</div><h1 class="page-title">Report an item</h1><p class="sub">Tell the community about an item that was lost or found.</p>
+  <div class="panel" style="margin-top:22px">
+    <form id="reportForm" class="form-grid">
+      <div class="field"><label for="reportType">I want to report</label><select id="reportType" required><option value="Found">An item I found</option><option value="Lost">An item I lost</option></select></div>
+      <div class="field"><label for="itemCategory">Category</label><select id="itemCategory"><option>Electronics</option><option>Accessories</option><option>Clothing</option><option>Other</option></select></div>
+      <div class="field"><label for="itemName">Item name</label><input id="itemName" required placeholder="e.g. Blue water bottle"></div>
+      <div class="field"><label for="itemLocation">Where was it lost or found?</label><input id="itemLocation" required placeholder="e.g. School library"></div>
+      <div class="field"><label for="itemDate">Date</label><input id="itemDate" type="date" required></div>
+      <div class="field"><label for="itemContact">Contact information</label><input id="itemContact" required placeholder="Email or phone number"></div>
+      <div class="field full"><label for="itemDescription">Description</label><textarea id="itemDescription" placeholder="Add details that could help identify the item." required></textarea></div>
+      <div class="field full"><label for="itemPhoto">Photo (optional)</label><input id="itemPhoto" type="file" accept="image/*"><span class="meta">Photos are kept in this browser for this demo.</span></div>
+      <div class="field full"><div class="note">For privacy, avoid posting passwords, home addresses, or other sensitive information. Meet in a public place when arranging a return.</div></div>
+      <div class="field full"><button class="btn primary" type="submit">Submit report</button></div>
+    </form>
+  </div>
+</section>
+
+<section id="scan" class="hidden">
+  <div class="eyebrow">Quick item lookup</div><h1 class="page-title">Scan a QR code</h1><p class="sub">Use a code connected to a Returnly listing, or enter its code below.</p>
+  <div class="panel" style="margin-top:22px">
+    <div class="camera-box" id="cameraBox"><div id="cameraPlaceholder" style="text-align:center;padding:25px"><div style="font-size:42px">▦</div><b>Camera scanner</b><p style="color:#cbd5e1;font-size:13px">Camera preview is optional. You can enter a code manually below.</p></div><video id="cameraVideo" class="hidden" autoplay playsinline></video></div>
+    <div class="hero-actions"><button class="btn primary" onclick="startCamera()">Open camera</button><button class="btn" onclick="stopCamera()">Stop camera</button></div>
+    <div style="height:1px;background:var(--line);margin:22px 0"></div>
+    <div class="field"><label for="qrCodeInput">Enter item code</label><input id="qrCodeInput" placeholder="e.g. RT-1001"></div>
+    <div class="hero-actions"><button class="btn primary" onclick="lookupCode()">Find item</button></div>
+    <p class="meta">Note: this prototype shows a camera preview but does not automatically decode QR codes. Enter the listing code printed with the QR code.</p>
+  </div>
+</section>
+</main>
+<footer>Returnly · Find it. Return it. <span style="display:block;margin-top:5px">Student project prototype — sample listings are for demonstration.</span></footer>
+
+<div id="modalBackdrop" class="modal-backdrop hidden" onclick="if(event.target===this)closeModal()">
+  <div class="modal"><div class="modal-top"><span class="eyebrow">Item details</span><button class="close" onclick="closeModal()">×</button></div><div id="modalContent"></div></div>
+</div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const sampleItems = [
+ {id:"RT-1001",name:"Black water bottle",category:"Other",type:"Found",location:"School library",date:"2026-11-15",description:"A black reusable water bottle was found near the library tables.",contact:"returnly.demo@example.com",emoji:"🥤"},
+ {id:"RT-1002",name:"Wireless earbuds",category:"Electronics",type:"Found",location:"School canteen",date:"2026-11-14",description:"White wireless earbuds in a small charging case.",contact:"returnly.demo@example.com",emoji:"🎧"},
+ {id:"RT-1003",name:"Black wallet",category:"Accessories",type:"Found",location:"Sports hall",date:"2026-11-13",description:"A black wallet. The owner should be able to describe what is inside.",contact:"returnly.demo@example.com",emoji:"👛"},
+ {id:"RT-1004",name:"Cream hoodie",category:"Clothing",type:"Found",location:"Classroom block",date:"2026-11-12",description:"A cream-coloured hoodie left in a classroom.",contact:"returnly.demo@example.com",emoji:"🧥"}
+];
+let items = [...sampleItems];
+let cameraStream = null;
+function loadSaved(){try{const saved=JSON.parse(localStorage.getItem("returnlyItems")||"[]");items=[...saved,...sampleItems]}catch(e){items=[...sampleItems]}}
+function saveItems(){try{localStorage.setItem("returnlyItems",JSON.stringify(items.filter(x=>!sampleItems.some(s=>s.id===x.id))))}catch(e){toast("Could not save this listing in your browser.")}}
+function showPage(page){
+ document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+ document.getElementById(page).classList.remove("hidden");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+ if(page==="browse")renderItems(); if(page==="home")renderHome();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function card(item){return `<article class="item-card" onclick="openItem('${item.id}')"><div class="item-art">${item.photo?`<img src="${item.photo}" alt="" style="width:100%;height:100%;object-fit:cover">`:item.emoji||"📦"}</div><div class="item-info"><strong>${escapeHTML(item.name)}</strong><div class="meta">${escapeHTML(item.location)} · ${formatDate(item.date)}</div><span class="tag">${item.type} · ${item.category}</span></div></article>`}
+function renderHome(){document.getElementById("homeItems").innerHTML=items.filter(i=>i.type==="Found").slice(0,4).map(card).join("")||'<div class="empty">No items have been reported yet.</div>'}
+function renderItems(){
+ const q=document.getElementById("searchInput").value.toLowerCase(),cat=document.getElementById("categoryFilter").value,type=document.getElementById("typeFilter").value;
+ const filtered=items.filter(i=>(i.name+" "+i.location+" "+i.description).toLowerCase().includes(q)&&(cat==="All"||i.category===cat)&&(type==="All"||i.type===type));
+ document.getElementById("itemsGrid").innerHTML=filtered.map(card).join("")||'<div class="empty" style="grid-column:1/-1">No matching items found. Try another search or report an item.</div>';
+}
+function openItem(id){
+ const item=items.find(i=>i.id===id);if(!item)return;
+ document.getElementById("modalContent").innerHTML=`<div style="font-size:54px;margin:15px 0">${item.photo?`<img src="${item.photo}" style="width:100%;max-height:190px;object-fit:cover;border-radius:12px">`:item.emoji||"📦"}</div><h2>${escapeHTML(item.name)}</h2><p class="sub">${item.type} · ${item.category}</p><p>${escapeHTML(item.description)}</p><p class="meta">Location: ${escapeHTML(item.location)}<br>Date: ${formatDate(item.date)}<br>Listing code: <b>${item.id}</b></p><div class="note">Before arranging a return, the claimant should describe identifying details that are not shown in the public listing.</div><div class="hero-actions"><button class="btn primary" onclick="showVerify('${item.id}')">Verify ownership</button></div>`;
+ document.getElementById("modalBackdrop").classList.remove("hidden");
+}
+function showVerify(id){
+ const item=items.find(i=>i.id===id);if(!item)return;
+ document.getElementById("modalContent").innerHTML=`<h2>Ownership check</h2><p class="sub">Answer a few questions to help confirm this item is yours.</p><form id="verifyForm" class="form-grid" style="margin-top:18px"><div class="field full"><label>What makes this item yours?</label><textarea id="proofText" required placeholder="Describe a detail that is not shown in the listing."></textarea></div><div class="field full"><label>Your contact information</label><input id="proofContact" required placeholder="Email or phone number"></div><div class="field full"><div class="note">This demo does not automatically confirm ownership. A person responsible for the item must review the answers before handing it over.</div></div><div class="field full"><button class="btn primary" type="submit">Send verification request</button></div></form>`;
+ document.getElementById("verifyForm").addEventListener("submit",e=>{e.preventDefault();closeModal();toast("Verification request prepared. The item holder must review it.");});
+}
+function closeModal(){document.getElementById("modalBackdrop").classList.add("hidden")}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.remove("hidden");setTimeout(()=>t.classList.add("hidden"),3000)}
+function formatDate(d){if(!d)return "Date not set";const p=d.split("-");return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d}
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+document.getElementById("reportForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const file=document.getElementById("itemPhoto").files[0];
+ const add=photo=>{
+  const item={id:"RT-"+Math.floor(1000+Math.random()*9000),name:document.getElementById("itemName").value.trim(),category:document.getElementById("itemCategory").value,type:document.getElementById("reportType").value,location:document.getElementById("itemLocation").value.trim(),date:document.getElementById("itemDate").value,contact:document.getElementById("itemContact").value.trim(),description:document.getElementById("itemDescription").value.trim(),photo,emoji:"📦"};
+  items.unshift(item);saveItems();e.target.reset();toast("Your report has been added.");showPage("browse");
+ };
+ if(file){const reader=new FileReader();reader.onload=()=>add(reader.result);reader.readAsDataURL(file)}else add(null);
+});
+function lookupCode(){const code=document.getElementById("qrCodeInput").value.trim().toUpperCase();const item=items.find(i=>i.id.toUpperCase()===code);if(item)openItem(item.id);else toast("No listing found for that code. Check the code and try again.");}
+async function startCamera(){
+ if(!navigator.mediaDevices?.getUserMedia){toast("Camera access is not available in this browser.");return}
+ try{cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});const v=document.getElementById("cameraVideo");v.srcObject=cameraStream;v.classList.remove("hidden");document.getElementById("cameraPlaceholder").classList.add("hidden")}catch(e){toast("Camera permission was not granted. You can enter a code manually.")}
+}
+function stopCamera(){if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}document.getElementById("cameraVideo").classList.add("hidden");document.getElementById("cameraPlaceholder").classList.remove("hidden")}
+loadSaved();renderHome();
+</script>
+</body>
+</html>
